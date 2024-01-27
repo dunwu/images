@@ -4,4 +4,4 @@
 >
 > 图片路径：https://raw.githubusercontent.com/dunwu/images/master + 图片相对路径
 >
-> 如：https://raw.githubusercontent.com/dunwu/images/master/images/algorithm/tree/red-black-tree-01.png
+> 如：https://raw.githubusercontent.com/dunwu/images/master/common/dunwu-logo.png
