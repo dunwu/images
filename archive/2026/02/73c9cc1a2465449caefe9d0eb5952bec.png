@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="preload" href="https://rahulvishwakarma.wordpress.com/wp-content/uploads/2016/06/kafka-broker-internals.png?w=634" as="image" />
+		<link rel="profile" href="https://gmpg.org/xfn/11" />
+		<title>Rahul Vishwakarma: Image</title>
+		<meta name='robots' content='max-image-preview:large' />
+<link rel='dns-prefetch' href='//s.w.org' />
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+	<style id='wp-img-auto-sizes-contain-inline-css' type='text/css'>
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+<script type="text/javascript" id="jetpack-mu-wpcom-settings-js-before">
+/* <![CDATA[ */
+var JETPACK_MU_WPCOM_SETTINGS = {"assetsUrl":"https://s1.wp.com/wp-content/mu-plugins/jetpack-mu-wpcom-plugin/sun/jetpack_vendor/automattic/jetpack-mu-wpcom/src/build/"};
+//# sourceURL=jetpack-mu-wpcom-settings-js-before
+/* ]]> */
+</script>
+<script type="text/javascript" src="/wp-content/js/rlt-proxy.js?m=1720530689i&amp;ver=20240709" id="rlt-proxy-js"></script>
+<script type="text/javascript" id="rlt-proxy-js-after">
+/* <![CDATA[ */
+	rltInitialize( {"token":null,"iframeOrigins":["https:\/\/widgets.wp.com"]} );
+//# sourceURL=rlt-proxy-js-after
+/* ]]> */
+</script>
+<meta name="generator" content="WordPress.com" />
+<link rel="shortcut icon" type="image/x-icon" href="https://s1.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48" />
+<link rel="icon" type="image/x-icon" href="https://s1.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48" />
+<link rel="apple-touch-icon" href="https://s2.wp.com/i/webclip.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://rahulvishwakarma.wordpress.com/osd.xml" title="Rahul Vishwakarma" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com" />
+<meta name="theme-color" content="#edefef" />
+		<style>
+body {
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen-Sans","Ubuntu","Cantarell","Helvetica Neue",sans-serif;
+}
+
+.header {
+	display: flex;
+}
+
+.logo-container {
+	flex-grow: 1;
+	margin-left: 14px;
+	margin-top: 3px;
+}
+
+.logo-container > a > span {
+	display: none;
+}
+
+.logo-container > a {
+	mask: url( '/i/logo/wordpress-dot-com.svg' );
+	-webkit-mask: url( '/i/logo/wordpress-dot-com.svg' );
+	mask-size: contain;
+	-webkit-mask-size: contain;
+	background-color: #003c56;
+	display: block;
+	width: 170px;
+	height: 36px;
+}
+
+.login-nav {
+	display: flex;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.login-nav li {
+	display: block;
+}
+
+.login-nav li a {
+	color: #003c56;
+	display: block;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 14px;
+	padding: 15px 12px 11px;
+	text-decoration: none;
+}
+
+.login-nav li a.get-started {
+	font-weight: 700;
+}
+
+.image-container {
+	margin: 50px auto 0;
+	max-width: 60%;
+	display: flex;
+}
+
+.image-container > div {
+	display: inline;
+	margin: 0 auto;
+}
+
+.site-name {
+	margin-bottom: 10px;
+}
+
+.site-name a {
+	display: flex;
+	color: #003c56;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.site-name img {
+	height: 32px;
+	width: 32px;
+	border-radius: 16px;
+}
+
+.site-name span {
+	display: block;
+	margin: auto 10px;
+}
+
+.the-image {
+	max-width: 100%;
+}
+
+.footer {
+	display: flex;
+	background: #f6f7f7;
+	margin: 50px auto;
+	max-width: 530px;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.footer-main-content {
+	color: #646970;
+	font-size: 14px;
+	padding-left: 20px;
+}
+
+html[dir=rtl] .footer-main-content {
+	padding-left: 0;
+	padding-right: 20px;
+}
+
+.footer-text {
+	font-weight: 700;
+}
+
+.footer-link {
+	color: #069E08;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.footer-link:hover {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+#footer-logo {
+	display: flex;
+	margin-top: 18px;
+}
+
+.qr-code-apps {
+	display: flex;
+}
+
+.is-mobile .footer {
+	padding: 0;
+}
+
+.is-mobile .footer-main-content {
+	padding: 24px;
+}
+
+.is-mobile #footer-logo {
+	margin-top: 0;
+}
+
+.is-mobile .footer-text {
+	font-weight: 400;
+}
+
+.is-mobile .qr-code-apps, 
+.is-mobile .qr-code-apps-text,
+.ios-badge, 
+.android-badge {
+	display: none;
+}
+
+.is-mobile-ios .ios-badge, 
+.is-mobile-android .android-badge {
+	display: block;
+}
+
+@media( max-width: 782px ) {
+	.image-container, 
+	.footer {
+	max-width: 80%;
+	}
+}
+
+@media( max-width: 640px ) {
+	.image-container,
+	.footer {
+		max-width: 90%;
+	}
+}
+
+@media( max-width: 480px ) {
+	.image-container,
+	.footer {
+		max-width: 95%;
+	}
+}
+
+@media ( prefers-color-scheme: dark ) {
+	body {
+		background: black;
+	}
+
+	.logo-container a {
+		background-color: #bbb;
+	}
+
+	.login-nav li a,
+	.site-name a {
+		color: #bbb;
+	}
+
+	.footer {
+		background: #2C3338;
+	}
+
+	.footer-main-content {
+		color: #8C8F94;
+	}
+}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="logo-container">
+				<a href="https://wordpress.com/"><span>WordPress.com</span></a>
+			</div>
+			<ul class="login-nav" role="menu">
+				<li>
+					<a class="get-started" role="menu-item" href="https://wordpress.com/start?ref=image-landing-page">Start Your Own Site</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="image-container">
+			<div>
+				<div class="site-name">
+					<a href="https://rahulvishwakarma.wordpress.com">
+						<img src="/i/logo/w.svg" />
+						<span>Rahul Vishwakarma on WordPress.com</span>
+					</a>
+				</div>
+
+				<img src="https://rahulvishwakarma.wordpress.com/wp-content/uploads/2016/06/kafka-broker-internals.png?w=634" class="the-image" />
+			</div>
+		</div>
+		<div class="footer">
+			<div class="qr-code-apps">					
+				<img src="/wp-content/lib/image-landing-page/qr-code.svg" alt="A QR code to get the app, scan this code with your device's camera to download the Jetpack mobile app" width="150" height="150" />
+			</div>
+			<div class="footer-main-content">
+				<img id="footer-logo" src="/wp-content/lib/image-landing-page/app-icon.svg">
+				<p class="footer-text">There&#039;s more to discover with the Jetpack app.</p>				
+				<p class="qr-code-apps-text">
+					Visit <a href="https://apps.wordpress.com/get?campaign=image-landing-page-link" class="footer-link">wp.com/app</a>, or scan the code with your mobile device				</p>
+				<div class="icons-apps">
+					<a href="https://itunes.apple.com/app/apple-store/id1565481562?pt=299112&amp;ct=image-landing-page-new&amp;mt=8" class="ios-badge">
+						<img src="https://s0.wp.com/wp-content/themes/a8c/apps/i/en-us/app-store-badge.svg" alt="Download on the App Store"></a>
+
+					<a href="https://play.google.com/store/apps/details?id=com.jetpack.android&amp;referrer=utm_source%3Dwordpress.com%26utm_medium%3Dwebsite%26utm_campaign%3Dimage-landing-page-new" class="android-badge">
+						<img src="https://s0.wp.com/wp-content/themes/a8c/apps/i/en-us/google-play-badge.svg" alt="Download on the App Store"></a>
+				</div>
+			</div>
+		</div>
+		<!-- wpcom_wp_footer -->
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/files/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/pub/fictive/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script src="//stats.wp.com/w.js?68" defer></script> <script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'34235586','blog_tz':'0','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+		// Prevent sending pageview tracking from WP-Admin pages.
+		_stq.push(['view', {'blog':'34235586','v':'wpcom','tz':'0','user_id':'0','arch_other':'/wp-content/uploads/2016/06/kafka-broker-internals.png?w=634&amp;show_image_landing_page=true','subd':'rahulvishwakarma'}]);
+		_stq.push(['extra', {'crypt':'UE43P1k3OHA5ayxOKzNYLHhZang0bHJufk1CcEs5RWpXSw=='}]);
+_stq.push([ 'clickTrackerInit', '34235586', '0' ]);
+</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;" alt="" /></noscript>
+<meta id="bilmur" property="bilmur:data" content="" data-provider="wordpress.com" data-service="simple" data-site-tz="Etc/GMT-0" data-custom-props="{&quot;logged_in&quot;:&quot;0&quot;,&quot;wptheme&quot;:&quot;pub\/fictive&quot;,&quot;wptheme_is_block&quot;:&quot;0&quot;}"  >
+		<script defer src="/wp-content/js/bilmur.min.js?i=17&amp;m=202607"></script> 			<script type="text/javascript">
+			// Apply class names to enable mobile and platform-specific content in app promo.
+			var htmlTag = document.getElementsByTagName( 'html' )[0];
+			if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent ) ) {
+				htmlTag.className = "is-mobile";
+			}
+
+			if ( /iPhone|iPad|iPod/i.test( navigator.userAgent ) ) {
+				htmlTag.className += " is-mobile-ios ";
+			}
+
+			if ( /Android/i.test( navigator.userAgent ) ) {
+				htmlTag.className += " is-mobile-android ";
+			}
+
+			// Set an appropriate app icon in the footer, based on whether the site is loaded in dark mode.
+			var isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches;
+
+			if ( isDarkMode ) {
+				var darkAppIcon = document.getElementById("footer-logo").src.split('.svg').join("-dark.svg");
+				document.getElementById("footer-logo").src = darkAppIcon;
+			}
+		</script>
+	</body>
+</html>
